@@ -1,0 +1,81 @@
+openapi: 3.0.1
+info:
+  title: Text Analyzer
+  description: 'It analyzes the text send to the API endpoint'
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: marcos_lede@yahoo.com.ar
+    name: Marcos Lede
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+tags:
+- name: analyzer
+  description: It parses the text to analyze
+paths:
+  /analyze:
+    post:
+      tags:
+        - analyze
+      summary: Parse a string
+      operationId: executeAnalyze
+      requestBody:
+         description: String to parse
+         required: true
+         content:
+#           text/plain:
+#             schema:
+#               type: string
+           application/json:
+             schema:
+               type: object
+               properties:
+                 text: 
+                   type: string
+               required:
+                 - text
+               additionalProperties:
+                 type: string
+#           application/x-www-form-urlencoded:
+#             schema:
+#               type: object
+#               additionalProperties: true
+        
+      responses:
+        200:
+          description: succesful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+  
+components:
+  schemas:
+    Response:
+      type: object
+      properties:
+        textLength:
+          $ref: '#/components/schemas/Text'
+        wordCount:
+          type: integer
+          format: int64
+        characterCount:
+          type: array
+          items:
+            additionalProperties:
+              type: integer
+    Text:
+      type: object
+      properties:
+        whiteSpaces: 
+          type: integer
+          format: int64
+        withoutSpaces:
+          type: integer
+          format: int64
+    Parameter:
+      type: object
+      properties:
+        text:
+          type: string  

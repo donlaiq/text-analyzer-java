@@ -1,0 +1,16 @@
+{
+	"library": "spring-mvc",
+	"dateLibrary": "java8",
+	"hideGenerationTimestamp": true,
+	"modelPackage": "com.donlaiq.api.model",
+	"apiPackage": "com.donlaiq.api",
+	"invokerPackage": "com.donlaiq.api",
+	"serializableModel": true,
+	"useTags": true,
+	"useGzipFeature": true,
+	"hateoas": true,
+	"withXml": true,
+	"importMappings": {
+		"Link": "org.springframework.hateoas.Link"
+	}	
+}
