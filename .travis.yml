@@ -4,5 +4,5 @@ jdk:
 deploy:
   provider: heroku
   api-key:
-    secure: ENCRYPTED_STRING
+    secure: $HEROKU_API_KEY
   app: text-analyzer-java
