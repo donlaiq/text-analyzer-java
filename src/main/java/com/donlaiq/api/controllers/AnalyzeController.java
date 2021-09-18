@@ -27,9 +27,9 @@ public class AnalyzeController implements AnalyzeApi{
 	@Override
 	public ResponseEntity<Response> executeAnalyze(@NotNull @Valid Map<String, String> toParse) {
 		int[] characters = new int[58];
-		long textLength = toParse.get("text").length();
-		long whiteSpaces = 0;
-		long wordCount = 0;
+		int textLength = toParse.get("text").length();
+		int whiteSpaces = 0;
+		int wordCount = 0;
 		char[] toParseCharacters = toParse.get("text").toCharArray();
 		for(int i = 0; i < textLength; i++)
 		{
@@ -59,7 +59,7 @@ public class AnalyzeController implements AnalyzeApi{
 		//characterCount = characterCount.substring(0, characterCount.length()-1);
 		
 		Text text = new Text();
-		text.setWhiteSpaces(whiteSpaces);
+		text.setWithSpaces(textLength);
 		text.setWithoutSpaces(textLength - whiteSpaces);
 		
 		Response response = new Response();

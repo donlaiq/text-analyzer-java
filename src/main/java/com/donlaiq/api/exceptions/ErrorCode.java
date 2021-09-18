@@ -1,7 +1,7 @@
 package com.donlaiq.api.exceptions;
 
 public enum ErrorCode {
-	INPUT_ERROR("PACKT-0001", "The input is malformed. Only letter from a-z and A-Z, or whitespaces, are accepted");
+	INPUT_ERROR("PACKT-0001", "The API is being called in a wrong way");
 	
 	private String errCode;
 	private String errMsgKey;

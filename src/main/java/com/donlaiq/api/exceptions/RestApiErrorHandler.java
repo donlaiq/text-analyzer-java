@@ -33,7 +33,7 @@ public class RestApiErrorHandler {
 											.setUrl(request.getRequestURL().toString())
 											.setReqMethod(request.getMethod());
 		
-		log.info("The user enter a invalid input");
+		log.info("Bad Request");
 		
 		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
 	}
