@@ -4,7 +4,6 @@ import org.apache.logging.log4j.util.Strings;
 
 public class Error {
 	
-	private static final long serialVersionUID = 1L;
 	private String errorCode;
 	private String message;
 	private Integer status;

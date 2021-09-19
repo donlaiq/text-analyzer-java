@@ -1,7 +1,5 @@
 package com.donlaiq.api.controller;
 
-import java.time.Instant;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,12 +12,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MockMvcBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.donlaiq.api.controllers.AnalyzeController;
 import com.donlaiq.api.exceptions.RestApiErrorHandler;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -42,8 +38,6 @@ public class AnalyzeControllerTest {
 	public void setup()
 	{
 		mockMvc = MockMvcBuilders.standaloneSetup(controller).setControllerAdvice(new RestApiErrorHandler(msgSource)).build();
-		
-		final Instant now = Instant.now();
 	}
 	
 	
@@ -94,6 +88,25 @@ public class AnalyzeControllerTest {
 													.andExpect(jsonPath("$.textLength.withoutSpaces").value("11"))
 													.andExpect(jsonPath("$.wordCount").value("3"))
 													.andExpect(jsonPath("$.characterCount[7].t").value("1"))
+													.andReturn().getResponse();
+		
+		assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+	}
+	
+	
+	@Test
+	@DisplayName("test uppercase, lowercase and middle ASCII characters")
+	public void testBoundaryCharacters() throws Exception 
+	{
+		MockHttpServletResponse response  = mockMvc.perform(post("/analyze").
+													contentType(MediaType.APPLICATION_JSON)
+													.content("{\"text\":\"@ z { A ` Z a 0 9\"}")
+													.accept(MediaType.APPLICATION_JSON))
+													.andDo(print())
+													.andExpect(jsonPath("$.characterCount[0].A").value("1"))
+													.andExpect(jsonPath("$.characterCount[1].Z").value("1"))
+													.andExpect(jsonPath("$.characterCount[2].a").value("1"))
+													.andExpect(jsonPath("$.characterCount[3].z").value("1"))
 													.andReturn().getResponse();
 		
 		assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());

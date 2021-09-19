@@ -22,30 +22,38 @@ import com.donlaiq.api.model.Text;
 @RestController
 public class AnalyzeController implements AnalyzeApi{
 	
-	private static final Logger log = LoggerFactory.getLogger(AnalyzeController.class);
-
 	@Override
 	public ResponseEntity<Response> executeAnalyze(@NotNull @Valid Map<String, String> toParse) {
+		// Array to count the instances of A-Z and a-z
 		int[] characters = new int[58];
+		// Length of the string to parse
 		int textLength = toParse.get("text").length();
+		// Count the white spaces		
 		int whiteSpaces = 0;
+		// Count the words (every combination of different letters and other characters except for white spaces)
 		int wordCount = 0;
+		// Convert the string to an array of char, to be able to work with the ASCII values 
 		char[] toParseCharacters = toParse.get("text").toCharArray();
+		
 		for(int i = 0; i < textLength; i++)
 		{
 			if(toParseCharacters[i] == ' ')
 				whiteSpaces ++;
+			// Characters from A to Z
 			else if(toParseCharacters[i] >= 65 && toParseCharacters[i] <= 90)
 				characters[toParseCharacters[i]-'A']++;
+			// Characters from a to z
 			else if(toParseCharacters[i] >= 97 && toParseCharacters[i] <= 122)
 				characters[toParseCharacters[i]-'A']++;
 		}
 		
+		// Get an array of substrings splitting the original string by its white spaces
 		String[] words = toParse.get("text").split(" ");
 		for(String w: words)
 			if(!w.equals(""))
 				wordCount++;
 		
+		// Generate a list of maps, where each map is a single key/value element (<letter>/<instances>) having the letters with one or more instances
 		List<Map<String, Integer>> list = new ArrayList<>();
 		for(char i = 0; i < 58; i++)
 		{
@@ -56,7 +64,8 @@ public class AnalyzeController implements AnalyzeApi{
 				list.add(characterCount);
 			}
 		}
-		//characterCount = characterCount.substring(0, characterCount.length()-1);
+
+		// Text and Response are two convenient ways to stores the values, helpful to generate the JSON response 
 		
 		Text text = new Text();
 		text.setWithSpaces(textLength);
@@ -67,16 +76,9 @@ public class AnalyzeController implements AnalyzeApi{
 		response.setWordCount(wordCount);
 		response.setCharacterCount(list);
 		
-		/*response.setLength(textLength);
-		response.setWhiteSpaces(whiteSpaces);
-		response.setWords(wordCount);
-		response.setCharacterCount(characterCount);*/
-		
 		HttpHeaders headers = new HttpHeaders();
 		return new ResponseEntity<>(response, headers, HttpStatus.OK);
 		
-		// TODO Auto-generated method stub
-		//return AnalyzeApi.super.executeAnalyze(toParse);
 	}
 	
 	

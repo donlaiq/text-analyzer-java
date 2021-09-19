@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class RestApiErrorHandler {
 	
-	private static final Logger log = LoggerFactory.getLogger(RestApiErrorHandler.class);
 	private final MessageSource messageSource;
 	
 	@Autowired
@@ -32,8 +31,6 @@ public class RestApiErrorHandler {
 											HttpStatus.INTERNAL_SERVER_ERROR.value())
 											.setUrl(request.getRequestURL().toString())
 											.setReqMethod(request.getMethod());
-		
-		log.info("Bad Request");
 		
 		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
 	}
